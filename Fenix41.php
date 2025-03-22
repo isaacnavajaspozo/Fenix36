@@ -74,12 +74,12 @@ while (true) {
     echo "\nBienvenido al gestor de tareas!\n";
     showTasks($tasks);
     echo "\n";
-    echo "___________           .__        ________   ________   \n";
-    echo "\_   _____/___   ____ |__|__  ___\_____  \ /  _____/   \n";
-    echo " |    __)/ __ \ /    \|  \  \/  /  _(__  </   __  \    \n";
-    echo " |     \|  ___/|   |  \  |>    <  /       \  |__\  \   \n";
-    echo " \___  /\____  >___|  /__/__/\_ \/______  /\_____  /   \n";
-    echo "     \/      \/     \/         \/       \/       \/    \n";
+    echo "___________           .__          _____ ____   \n";
+    echo "\_   _____/___   ____ |__|__  ___ /  |  /_   |  \n";
+    echo " |    __)/ __ \ /    \|  \  \/  //   |  ||   |  \n";
+    echo " |     \|  ___/|   |  \  |>    </    ^   /   |  \n";
+    echo " \___  /\____  >___|  /__/__/\_ \____   ||___|  \n";
+    echo "     \/      \/     \/         \/    |__|       \n";
     echo "\n";
     // Menú de opciones
     echo "1. Agregar una tarea\n";
@@ -93,7 +93,7 @@ while (true) {
     echo "9. Ver tareas\n";
     echo "0. Salir\n";
     echo "\n";
-    echo "\033[30;43m🌱 Contra el gasto innecesario de papel.\033[0m \n";
+    echo "\033[30;43m🌱 Menos papel, más conciencia ecológica.\033[0m \n";
     echo "Selecciona una opción: ";
     $option = intval(trim(fgets(STDIN)));
 
