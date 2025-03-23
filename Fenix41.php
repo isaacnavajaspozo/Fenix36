@@ -3,6 +3,13 @@
 define('TASK_FILE', 'Task-Fenix36.json');
 define('ARCHIVE_FILE', 'ash.txt');
 
+echo "\n";
+echo "\n";
+echo "  +---------------------------------------------------------+\n";
+echo "  | Fenix36::                                               |\n";
+echo "  | > Metodología KANBAN para trabajar de manera individual |\n";
+echo "  +---------------------------------------------------------+\n";
+
 function loadTasks() {
     if (!file_exists(TASK_FILE)) {
         return [];
