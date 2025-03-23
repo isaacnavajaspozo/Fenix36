@@ -5,10 +5,7 @@ define('ARCHIVE_FILE', 'ash.txt');
 
 echo "\n";
 echo "\n";
-echo "  +---------------------------------------------------------+\n";
-echo "  | Fenix36::                                               |\n";
-echo "  | > Metodología KANBAN para trabajar de manera individual |\n";
-echo "  +---------------------------------------------------------+\n";
+echo "> Metodología KANBAN para trabajar de manera individual.\n";
 
 function loadTasks() {
     if (!file_exists(TASK_FILE)) {
