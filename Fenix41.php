@@ -79,7 +79,8 @@ while (true) {
     echo "\033[32m7.  Marcar una tarea como realizada \033[0m\n";
     echo "\033[33m8.  Quitar tarea como realizada \033[0m\n";
     echo "\033[33m9.  Renombrar un padre o una tarea \033[0m\n";
-    echo "10. Ver tareas \n";
+    echo "\033[33m10. Mover posición de una tarea \033[0m\n";
+    echo "11. Ver tareas \n";
     echo "0. Salir \n";
     echo "\n";
     echo "\033[30;43m🌱 Menos papel, más conciencia ecológica.\033[0m \n";
@@ -374,6 +375,76 @@ while (true) {
             break;
 
         case 10:
+            // Verificar si hay tareas disponibles
+            if (empty($tasks)) {
+                echo "No hay tareas disponibles para reordenar.\n";
+                break;
+            }
+
+            // Mostrar padres disponibles
+            echo "Selecciona el padre de la tarea a mover:\n";
+            $parents = array_keys($tasks);
+            foreach ($parents as $index => $parent) {
+                echo ($index + 1) . ". $parent\n";
+            }
+
+            echo "Número de padre: ";
+            $parentIndex = intval(trim(fgets(STDIN))) - 1;
+            if (!isset($parents[$parentIndex])) {
+                echo "Selección no válida.\n";
+                break;
+            }
+            $parent = $parents[$parentIndex];
+
+            // Verificar si hay tareas dentro del padre
+            if (empty($tasks[$parent])) {
+                echo "No hay tareas en este padre.\n";
+                break;
+            }
+
+            // Mostrar las tareas disponibles
+            echo "🐣 Selecciona la tarea a mover:\n";
+            foreach ($tasks[$parent] as $index => $task) {
+                echo ($index + 1) . ". " . $task['name'] . "\n";
+            }
+
+            echo "Número de tarea a mover: ";
+            $taskIndex = intval(trim(fgets(STDIN))) - 1;
+            if (!isset($tasks[$parent][$taskIndex])) {
+                echo "Selección no válida.\n";
+                break;
+            }
+
+            // Guardar la tarea a mover y eliminarla temporalmente
+            $taskToMove = $tasks[$parent][$taskIndex];
+            array_splice($tasks[$parent], $taskIndex, 1);
+
+            // Mostrar nuevamente las tareas disponibles después de la eliminación
+            echo "🦅 Selecciona la nueva posición para la tarea:\n";
+            foreach ($tasks[$parent] as $index => $task) {
+                echo ($index + 1) . ". " . $task['name'] . "\n";
+            }
+            echo ($index + 2) . ". Última posición\n"; // Opción para ponerla al final
+
+            echo "Número de nueva posición: ";
+            $newPosition = intval(trim(fgets(STDIN))) - 1;
+
+            // Asegurar que la posición sea válida
+            if ($newPosition < 0) {
+                $newPosition = 0; // Si ingresa un número menor, se pone al inicio
+            } elseif ($newPosition > count($tasks[$parent])) {
+                $newPosition = count($tasks[$parent]); // Si es mayor, se pone al final
+            }
+
+            // Insertar la tarea en la nueva posición
+            array_splice($tasks[$parent], $newPosition, 0, [$taskToMove]);
+
+            // Guardar los cambios
+            saveTasks($tasks);
+            echo "Tarea movida con éxito.\n";
+            break;
+
+        case 11:
             // Ver tareas
 
             break;
