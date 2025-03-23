@@ -19,18 +19,6 @@ function loadTasks() {
 
 function saveTasks($tasks) {
     file_put_contents(TASK_FILE, json_encode($tasks));
-
-    // Hacer el archivo oculto según el sistema operativo
-    if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-        // En Windows, usar el comando attrib para hacer el archivo oculto
-        shell_exec("attrib +h " . TASK_FILE);
-    } else {
-        // En Linux/macOS, renombrar el archivo para que comience con un punto (.)
-        $hiddenFile = '.' . TASK_FILE;
-        if (!file_exists($hiddenFile)) {
-            rename(TASK_FILE, $hiddenFile);
-        }
-    }
 }
 
 function saveCompletedTasksToFile($tasks, $filename) {
