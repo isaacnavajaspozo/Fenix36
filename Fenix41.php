@@ -70,16 +70,17 @@ while (true) {
     echo "     \/      \/     \/         \/    |__|       \n";
     echo "\n";
     // Menú de opciones
-    echo "1. Agregar una tarea\n";
-    echo "2. Crear un nuevo padre\n";
-    echo "\033[31m3. Borrar todas las tareas          ~ De manera irrecuperable. \033[0m\n";
-    echo "\033[31m4. Borrar un padre                  ~ De manera irrecuperable. \033[0m\n";
-    echo "\033[31m5. Borrar una tarea específica      ~ De manera irrecuperable. \033[0m\n";
-    echo "\033[31m6. Borrar tareas completadas [x]    ~ Guarda las tareas antiguas si es necesario. \033[0m\n";
-    echo "\033[32m7. Marcar una tarea como realizada\033[0m\n";
-    echo "\033[33m8. Quitar tarea como realizada    \033[0m\n";
-    echo "9. Ver tareas\n";
-    echo "0. Salir\n";
+    echo "1.  Agregar una tarea \n";
+    echo "2.  Crear un nuevo padre \n";
+    echo "\033[31m3.  Borrar todas las tareas          ~ De manera irrecuperable. \033[0m\n";
+    echo "\033[31m4.  Borrar un padre                  ~ De manera irrecuperable. \033[0m\n";
+    echo "\033[31m5.  Borrar una tarea específica      ~ De manera irrecuperable. \033[0m\n";
+    echo "\033[31m6.  Borrar tareas completadas [x]    ~ Guarda las tareas antiguas si es necesario. \033[0m\n";
+    echo "\033[32m7.  Marcar una tarea como realizada \033[0m\n";
+    echo "\033[33m8.  Quitar tarea como realizada \033[0m\n";
+    echo "\033[33m9.  Renombrar un padre o una tarea \033[0m\n";
+    echo "10. Ver tareas \n";
+    echo "0. Salir \n";
     echo "\n";
     echo "\033[30;43m🌱 Menos papel, más conciencia ecológica.\033[0m \n";
     echo "Selecciona una opción: ";
@@ -287,6 +288,92 @@ while (true) {
             break;
 
         case 9:
+            echo "¿Qué deseas renombrar?\n";
+            echo "1. Una tarea\n";
+            echo "2. Un padre\n";
+            echo "Selecciona una opción: ";
+            $renameOption = intval(trim(fgets(STDIN)));
+
+            if ($renameOption === 1) {
+                // Renombrar una tarea
+                if (empty($tasks)) {
+                    echo "No hay tareas para renombrar.\n";
+                    break;
+                }
+                echo "Selecciona el padre de la tarea a renombrar:\n";
+                $parents = array_keys($tasks);
+                foreach ($parents as $index => $parent) {
+                    echo ($index + 1) . ". $parent\n";
+                }
+                echo "Número de padre: ";
+                $parentIndex = intval(trim(fgets(STDIN))) - 1;
+                if (!isset($parents[$parentIndex])) {
+                    echo "Selección no válida.\n";
+                    break;
+                }
+                $parent = $parents[$parentIndex];
+
+                if (empty($tasks[$parent])) {
+                    echo "No hay tareas en este padre.\n";
+                    break;
+                }
+
+                echo "Selecciona la tarea a renombrar:\n";
+                foreach ($tasks[$parent] as $index => $task) {
+                    echo ($index + 1) . ". " . $task['name'] . "\n";
+                }
+                echo "Número de tarea: ";
+                $taskIndex = intval(trim(fgets(STDIN))) - 1;
+                if (!isset($tasks[$parent][$taskIndex])) {
+                    echo "Selección no válida.\n";
+                    break;
+                }
+
+                echo "Escribe el nuevo nombre de la tarea: ";
+                $newTaskName = trim(fgets(STDIN));
+                $tasks[$parent][$taskIndex]['name'] = $newTaskName;
+                saveTasks($tasks);
+                echo "Tarea renombrada con éxito.\n";
+
+            } elseif ($renameOption === 2) {
+                // Renombrar un padre
+                if (empty($tasks)) {
+                    echo "No hay padres para renombrar.\n";
+                    break;
+                }
+                echo "Selecciona el padre a renombrar:\n";
+                $parents = array_keys($tasks);
+                foreach ($parents as $index => $parent) {
+                    echo ($index + 1) . ". $parent\n";
+                }
+                echo "Número de padre: ";
+                $parentIndex = intval(trim(fgets(STDIN))) - 1;
+                if (!isset($parents[$parentIndex])) {
+                    echo "Selección no válida.\n";
+                    break;
+                }
+                $oldParentName = $parents[$parentIndex];
+
+                echo "Escribe el nuevo nombre del padre: ";
+                $newParentName = trim(fgets(STDIN));
+
+                if (isset($tasks[$newParentName])) {
+                    echo "Ya existe un padre con ese nombre.\n";
+                    break;
+                }
+
+                // Renombrar clave en el array
+                $tasks[$newParentName] = $tasks[$oldParentName];
+                unset($tasks[$oldParentName]);
+                saveTasks($tasks);
+                echo "Padre renombrado con éxito.\n";
+
+            } else {
+                echo "Opción no válida.\n";
+            }
+            break;
+
+        case 10:
             // Ver tareas
 
             break;
